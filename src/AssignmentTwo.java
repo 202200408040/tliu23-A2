@@ -9,7 +9,8 @@ public class AssignmentTwo {
         //partThree();
         //partFourA();
         //partFourB();
-        partFive();
+        //partFive();
+        partSix();
     }
     public static void partThree(){
         Ride ride = new Ride("rollerCoaster",true,null,2,0);
@@ -31,7 +32,7 @@ public class AssignmentTwo {
         {
             ride.addVisitorToHistory(visitors.get(i));
         }
-        ride.checkVisitorFromHistory(visitors.get(random.nextInt(10)));
+       ride.checkVisitorFromHistory(visitors.get(random.nextInt(10)));
         ride.numberOfVisitors();
         ride.printRideHistory();
     }
@@ -65,7 +66,14 @@ public class AssignmentTwo {
         ride.printRideHistory();
     }
 
-    public void partSix(){
+    public static void partSix(){
+        Ride ride = new Ride("rollerCoaster",true,null,2,0);
+        List<Visitor>visitors = createVisitors(5);
+        for(int i = 0; i < 5; i ++)
+        {
+            ride.addVisitorToHistory(visitors.get(i));
+        }
+        ride.exportRideHistory("ride_history.csv");
     }
 
     public void partSeven(){
