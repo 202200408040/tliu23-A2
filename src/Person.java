@@ -52,4 +52,9 @@ public abstract class Person {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public void printInfo() {
+        System.out.println("Age: " + getAge());
+        System.out.println("Gender: " + getGender());
+    }
 }

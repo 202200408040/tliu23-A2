@@ -51,6 +51,12 @@ class Visitor extends Person{
     public void setFirstVisit(boolean isFirstVisit) {
         this.isFirstVisit = isFirstVisit;
     }
-
+    @Override
+    public void printInfo() {
+        System.out.println("Visitor " +getName()+ " Information:");
+        super.printInfo();
+        System.out.println("Ticket Type: " + getTicketType());
+        System.out.println("Is First Visit: " + isFirstVisit());
+    }
 }
 

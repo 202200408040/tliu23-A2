@@ -6,9 +6,9 @@ public class Ride implements RideInterface{
     private Employee operator;
     private Queue<Visitor> queue;
     private List<Visitor> history;
+
     public Ride() {
     }
-
     public Ride(String name, boolean isOpen, Employee operator) {
         this.name = name;
         this.isOpen = isOpen;
@@ -68,21 +68,43 @@ public class Ride implements RideInterface{
 
     @Override
     public void addVisitorToHistory(Visitor visitor) {
-
+        history.add(visitor);
+        System.out.println("Visitor "+ visitor.getName()+" successfully added to the " + name + " ride history.");
     }
 
     @Override
     public boolean checkVisitorFromHistory(Visitor visitor) {
+        for(Visitor v : history)
+        {
+            if(v == visitor)
+            {
+                System.out.println("Visitor:"+ visitor.getName()+"  record found in the " + name + " ride history.");
+                return true;
+            }
+        }
+        System.out.println("Visitor:"+ visitor.getName()+"  record not found in the " + name + " ride history.");
         return false;
     }
 
     @Override
     public int numberOfVisitors() {
-        return 0;
+        System.out.println("the number of Visitors in the " + name + " ride history is:"+history.size());
+        return history.size();
     }
 
     @Override
     public void printRideHistory() {
+        System.out.println("History of " + name + " ride:");
 
+        Iterator<Visitor> iterator = history.iterator();
+        while (iterator.hasNext()) {
+            Visitor visitor = iterator.next();
+            visitor.printInfo();
+        }
+    }
+
+    public void sortVisitorsInHistory() {
+        VisitorComparator comparator = new VisitorComparator();
+        Collections.sort(history, comparator);
     }
 }
