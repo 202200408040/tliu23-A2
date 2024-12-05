@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Ride implements RideInterface{
@@ -132,10 +135,40 @@ public class Ride implements RideInterface{
             Visitor visitor = iterator.next();
             visitor.printInfo();
         }
-    }
+        }
 
     public void sortVisitorsInHistory() {
         VisitorComparator comparator = new VisitorComparator();
         Collections.sort(history, comparator);
     }
+
+    public void exportRideHistory(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write("Name, Age, Gender, Ticket Type, Is First Visit");
+            writer.newLine();
+
+            Iterator<Visitor> iterator = history.iterator();
+            while (iterator.hasNext()) {
+                Visitor visitor = iterator.next();
+                String name = escapeSpecialCharacters(visitor.getName());
+                String ticketType = escapeSpecialCharacters(visitor.getTicketType());
+
+                writer.write(name + "," + visitor.getAge() + "," + visitor.getGender() + ","
+                        + ticketType + "," + visitor.isFirstVisit());
+                writer.newLine();
+            }
+            System.out.println("Ride history successfully exported to " + filePath);
+        } catch (IOException e) {
+            System.out.println("Error occurred while exporting ride history: " + e.getMessage());
+        }
+    }
+    private String escapeSpecialCharacters(String value) {
+        if (value.contains(",") || value.contains("\"")) {
+            return "\"" + value.replace("\"", "\"\"") + "\"";
+        }
+        return value;
+    }
+
+
+
 }
