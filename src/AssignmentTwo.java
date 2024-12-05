@@ -8,10 +8,11 @@ public class AssignmentTwo {
         random.setSeed(System.currentTimeMillis());
         //partThree();
         //partFourA();
-        partFourB();
+        //partFourB();
+        partFive();
     }
     public static void partThree(){
-        Ride ride = new Ride("rollerCoaster",true,null);
+        Ride ride = new Ride("rollerCoaster",true,null,2,0);
         List<Visitor>visitors = createVisitors(5);
         for(Visitor visitor : visitors)
         {
@@ -22,7 +23,7 @@ public class AssignmentTwo {
     }
 
     public static void partFourA(){
-        Ride ride = new Ride("rollerCoaster",true,null);
+        Ride ride = new Ride("rollerCoaster",true,null,2,0);
         //create 10 visitor
         List<Visitor>visitors = createVisitors(10);
         //The first five added to the history
@@ -36,7 +37,7 @@ public class AssignmentTwo {
     }
 
     public static void partFourB(){
-        Ride ride = new Ride("rollerCoaster",true,null);
+        Ride ride = new Ride("rollerCoaster",true,null,2,0);
         List<Visitor>visitors = createVisitors(5);
         for(int i = 0; i < 5; i ++)
         {
@@ -49,7 +50,19 @@ public class AssignmentTwo {
         ride.printRideHistory();
     }
 
-    public void partFive(){
+    public static void partFive(){
+        Ride ride = new Ride("rollerCoaster",true,new Employee(),2,0);
+        List<Visitor>visitors = createVisitors(10);
+        for(Visitor visitor : visitors)
+        {
+            ride.addVisitorToQueue(visitor);
+        }
+        System.out.println("----------------Before run one cycle----------------");
+        ride.printQueue();
+        ride.runOneCycle();
+        System.out.println("----------------After run one cycle----------------");
+        ride.printQueue();
+        ride.printRideHistory();
     }
 
     public void partSix(){
