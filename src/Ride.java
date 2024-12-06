@@ -1,6 +1,4 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class Ride implements RideInterface{
@@ -144,6 +142,7 @@ public class Ride implements RideInterface{
 
     public void exportRideHistory(String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            //Write the CSV file header
             writer.write("Name, Age, Gender, Ticket Type, Is First Visit");
             writer.newLine();
 
@@ -162,11 +161,71 @@ public class Ride implements RideInterface{
             System.out.println("Error occurred while exporting ride history: " + e.getMessage());
         }
     }
+    //Auxiliary method for escaping special characters.
     private String escapeSpecialCharacters(String value) {
         if (value.contains(",") || value.contains("\"")) {
             return "\"" + value.replace("\"", "\"\"") + "\"";
         }
         return value;
+    }
+
+    public void importRideHistory(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            boolean isFirstLine = true;
+            String line;
+            while ((line = reader.readLine())!= null) {
+                // Skip the file header row
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+
+                String[] visitorData = parseCsvLine(line);
+                if (visitorData!= null) {
+                    Visitor visitor = new Visitor(
+                            visitorData[0],
+                            Integer.parseInt(visitorData[1]),
+                            visitorData[2],
+                            visitorData[3],
+                            Boolean.parseBoolean(visitorData[4])
+                    );
+                    history.add(visitor);
+                }
+            }
+            System.out.println("Ride history successfully imported from " + filePath);
+        } catch (IOException e) {
+            System.out.println("Error occurred while importing ride history: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error occurred while parsing visitor data: " + e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Invalid file format: " + e.getMessage());
+        }
+    }
+
+    //Auxiliary method for parsing a line of CSV data, handling possible quoted wrapping and special character escaping
+    private String[] parseCsvLine(String line) {
+        boolean inQuotes = false;
+        StringBuilder currentValue = new StringBuilder();
+        List<String> values = new LinkedList<>();
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+
+            if (c == '"') {
+                inQuotes =!inQuotes;
+            } else if (c == ',' &&!inQuotes) {
+                values.add(currentValue.toString());
+                currentValue.setLength(0);
+            } else {
+                currentValue.append(c);
+            }
+        }
+
+        if (currentValue.length() > 0) {
+            values.add(currentValue.toString());
+        }
+
+        return values.toArray(new String[0]);
     }
 
 
