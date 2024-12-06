@@ -10,7 +10,8 @@ public class AssignmentTwo {
         //partFourA();
         //partFourB();
         //partFive();
-        partSix();
+        //partSix();
+        partSeven();
     }
     public static void partThree(){
         Ride ride = new Ride("rollerCoaster",true,null,2,0);
@@ -76,7 +77,11 @@ public class AssignmentTwo {
         ride.exportRideHistory("ride_history.csv");
     }
 
-    public void partSeven(){
+    public static void partSeven(){
+        Ride ride = new Ride("rollerCoaster",true,null,2,0);
+        ride.importRideHistory("ride_history.csv");
+        ride.numberOfVisitors();
+        ride.printRideHistory();
     }
 
     /**
